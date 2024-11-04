@@ -1,29 +1,32 @@
 import React from "react";
 
 // Define the type for the task
+
+interface TaskType {
+  id: string;
+  value?: string;
+  completed: boolean;
+}
+
 interface TaskProps {
-  task: {
-    id: string; // or number, depending on your ID type
-    value: string;
-    completed: boolean;
-  };
-  updateTask: (task: { id: string; completed: boolean }) => void;
+  task: TaskType;
+  updateTask: (args: { id: string; updatedTask: Partial<TaskType> }) => void;
   deleteTask: (id: string) => void;
 }
 
 const Task: React.FC<TaskProps> = ({ task, updateTask, deleteTask }) => {
-  const { id, value, completed } = task;
-
+  const { id, value } = task;
+  const handleToggle = () => {
+    updateTask({ id: task.id, updatedTask: { completed: !task.completed } });
+  };
   return (
     <div className="task">
       <input
         className="hidden"
         type="checkbox"
         id={id}
-        checked={completed}
-        onChange={() => {
-          updateTask({ id, completed: !completed });
-        }}
+        checked={task.completed}
+        onChange={handleToggle}
       />
       <label
         className="flex h-10 items-center rounded px-2 hover:bg-gray-900"

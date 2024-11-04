@@ -12,9 +12,10 @@ const Task = dynamic(() => import("../components/Task"), { ssr: false });
 
 interface TaskType {
   id: string;
-  value: string;
+  value?: string;
   completed: boolean;
 }
+
 
 export const Home = () => {
   // const [tasksList, setTasksList] = useState<TaskType[]>([]);
@@ -121,15 +122,15 @@ if (isError) {
             <h4 className="ml-3 text-lg font-semibold">My Tasks</h4>
           </div>
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const task: Omit<TaskType, "id"> = {
-                value: newTask,
-                completed: false,
-              };
-              addTask(task);
-              setNewTask("");
-            }}
+           onSubmit={(e) => {
+            e.preventDefault();
+            const task: Omit<TaskType, "id"> = {
+              value: newTask,
+              completed: false,
+            };
+            addTask(task);
+            setNewTask("");
+          }}
             className="my-2 flex h-8 w-full items-center rounded border-2 border-solid border-gray-700 px-2 text-sm font-medium"
           >
             <svg
@@ -163,11 +164,7 @@ if (isError) {
               <p className="text-center">{errorMessage}</p>
             ) : (
               tasksList?.map(
-                (task: {
-                  id: string; // or number, depending on your ID type
-                  value: string;
-                  completed: boolean;
-                }) => (
+                (task: TaskType) => (
                   <Task
                     key={task.id}
                     task={task}
@@ -180,12 +177,6 @@ if (isError) {
           </div>
         </div>
       </div>
-      {/* 
-interface TaskType {
-  id: string;
-  value: string;
-  completed: boolean;
-} */}
     </div>
   );
 };
